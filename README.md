@@ -11,7 +11,7 @@ Contains misc support methods, principally for database interaction
 * dbMethods.py:	Misc. support methods for interacting with the database.
 * dbSetup.py: Basic database conection methods.
 
-dataCleaning
+DataCleaning
 ------------
 
 *For these scripts, run sequence matters!*
@@ -22,7 +22,7 @@ dataCleaning
 
 3. convertItemInfo.py: Converts artist names to artist IDs in lastfm_itemlist
 
-entropyAnalysis
+EntropyAnalysis
 ---------------
 
 * calcEntropyByItem.py: Calculates entropy metrics over time for all items
