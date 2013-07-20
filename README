@@ -14,7 +14,7 @@ Contains misc support methods, principally for database interaction
 dataCleaning
 ------------
 
-*For thes scripts, run sequence matters!
+*For these scripts, run sequence matters!*
 
 1. prepAnnoTable.py: Converts raw annotations table to analysis-ready version
 
