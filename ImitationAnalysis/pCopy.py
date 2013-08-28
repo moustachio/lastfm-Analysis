@@ -1,0 +1,91 @@
+"""
+Script to calculate probability of an existing tag being copied from month to month.
+E.g. probability that any given tag used at t+1 is copied from the tag distribution at time t.
+Calculation is performed on an item by item basis.
+"""
+
+import sys
+sys.path.append('../bin') # This makes sure Python can see the 'bin' directory where dbSetup is located
+from dbSetup import *
+import time
+
+
+N = 5 # "N" for use in "topN" heuristic (typically 5)
+
+cursor=db.cursor()
+cursor.execute("update ent_table set topCopy=NULL, binCopy=NULL, normCopy=NULL where topCopy is not NULL;")
+db.commit()
+
+
+cursorSS=dbSS.cursor()
+cursorSS.execute("select * from lastfm_annotations order by item_id, tag_month;")
+
+lastItem = None
+lastDate = None
+first = True
+rowCount = 0
+totalTagDist = {}
+currentTagDist= {}
+start = time.time()
+
+for row in cursorSS:
+
+	if rowCount>0 and rowCount % 100000 == 0:
+		db.commit()
+		print rowCount, (time.time()-start) / 60.0
+
+	item = row[1]
+	tag = row[3]
+	date = row[4]
+	if (item != lastItem) or (date != lastDate):
+		
+		if not first and totalTagDist:	
+			# get frequencies of top N tags
+			topN = sorted(totalTagDist,key=totalTagDist.get)[-N:]
+			# this gives us the frequency of the most popular tag
+			n = totalTagDist[topN[-1]]
+
+			# MEASURE 1: Binary copy or not
+			binCopy=0
+			# MEASURE 2: Copy from top 5 or not
+			topCopy=0
+			# MEASURE 3: Copy proportional to frequency in distribution
+			normCopy = 0
+
+			# calculates counts for all measures
+			for t in currentTagDist:
+				tCount = totalTagDist.get(t,None)
+				if t in topN:
+					count = currentTagDist[t]
+					topCopy += count
+					binCopy += count
+					normCopy += count * (tCount / float(n))
+				elif tCount:
+					count = currentTagDist[t]
+					binCopy += count
+					normCopy += count * (tCount / float(n))
+
+			total = sum(currentTagDist.values())
+
+			cursor.execute("update ent_table set topCopy=%s, binCopy=%s, normCopy=%s where item_id=%s and month=%s", (float(topCopy) / total, float(binCopy) / total, float(normCopy) / total, lastItem, lastDate))
+
+		if item == lastItem:
+			for t in currentTagDist:
+				totalTagDist[t] = totalTagDist.get(t,0)+1
+		else:
+			totalTagDist = {} 
+
+		currentTagDist = {}
+
+		if item != lastItem:
+			first = True
+		else:
+			first = False
+
+	currentTagDist[tag] = currentTagDist.get(tag,0)+1
+	lastItem = item
+	lastDate = date
+	rowCount += 1
+
+closeDBConnection(cursor)
+closeDBConnectionSS(cursorSS)

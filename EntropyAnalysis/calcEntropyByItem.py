@@ -14,7 +14,7 @@ import time
 cursor=db.cursor()
 cursor.execute("DROP TABLE IF EXISTS ent_table;") # This should just drop the entropy table
 
-cursor.execute("CREATE TABLE ent_table (item_id mediumint(8) unsigned, month date, ent FLOAT, rel_ent FLOAT, gini FLOAT, unique_tags mediumint(8), total_annotations mediumint(8), \
+cursor.execute("CREATE TABLE ent_table (item_id mediumint(8) unsigned, month date, ent FLOAT, rel_ent FLOAT, gini FLOAT, unique_tags mediumint(8), total_annotations mediumint(8), topCopy FLOAT, binCopy FLOAT, normCopy FLOAT, \
     index(item_id), index(month)) ENGINE=innodb DEFAULT CHARSET=latin1;") 
 closeDBConnection(cursor) 
 

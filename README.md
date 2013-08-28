@@ -27,4 +27,16 @@ Scripts for cleaning and prepping raw data for analysis
 EntropyAnalysis
 ---------------
 
+Scripts for calculating diversity of tags by item, user, etc.
+
 * calcEntropyByItem.py: Calculates entropy metrics over time for all items
+
+Plotting
+--------
+
+Scripts for data visualization
+
+ImitationAnalysis
+-----------------
+
+Scripts for analyzing imitation behavior in users' tagging habits
