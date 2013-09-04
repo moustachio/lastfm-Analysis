@@ -1,3 +1,7 @@
+"""
+Converts raw loved tracks table to updated  table for analysis.
+Converts all item_url strings to numeric item IDs
+"""
 
 cursor.execute("CREATE TABLE IF NOT EXISTS `lastfm_lovedtracks` ( \
   `user_id` INT(10), \

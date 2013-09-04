@@ -1,5 +1,5 @@
 /*
-Sets up analysis database, copying tables from raw database. Also adds relevant indexes. Scrobble and annotation tables are more complex, and are handled separately.
+Sets up analysis database, copying tables from raw database. Also adds relevant indexes. Other tables (scrobbles, annotations, etc.) are more complex and handled separately.
 */
 
 SET autocommit=0;
@@ -54,14 +54,4 @@ CREATE TABLE IF NOT EXISTS `lastfm_friendlist` (
 insert into lastfm_friendlist select * from crawler_lastfm.lastfm_friendlist;
 COMMIT;
 
-CREATE TABLE `entropy` (
-  `item_id` MEDIUMINT(8) UNSIGNED NULL DEFAULT NULL,
-  `tag_id` MEDIUMINT(8) UNSIGNED NULL DEFAULT NULL,
-  `H` FLOAT NULL DEFAULT NULL,
-  `J` FLOAT NULL DEFAULT NULL,
-  `G` FLOAT NULL DEFAULT NULL,
-  INDEX `item_id` (`item_id`),
-  INDEX `tag_id` (`tag_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-COMMIT;
