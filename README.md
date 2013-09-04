@@ -45,7 +45,7 @@ ImitationAnalysis
 
 Scripts for analyzing imitation behavior in users' tagging habits
 
-*pcopy.py: Calculates probability of an existing tag being copied from month to month. E.g. probability that any given tag used at t+1 is copied from the tag distribution at time t. Calculation is performed on an item by item basis.
+* pcopy.py: Calculates probability of an existing tag being copied from month to month. E.g. probability that any given tag used at t+1 is copied from the tag distribution at time t. Calculation is performed on an item by item basis.
 
 Plotting
 --------
