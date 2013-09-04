@@ -23,15 +23,19 @@ topCopy = []
 binCopy = []
 normCopy = []
 
+#lastVal = None
 for row in cursorSS:
+	iid = row[0]
 	copyVal = row[7]
-	if copyVal != None:
+	#if lastVal and copyVal != None:
+	if copyVal != None and row[6] > 99:
 		rel_ent.append(row[3])
 		ent.append(row[2])
 		gini.append(row[4])
 		topCopy.append(copyVal)
 		binCopy.append(row[8])
 		normCopy.append(row[9])
+	#lastVal = copyVal
 
 
 
@@ -83,18 +87,3 @@ for data in ('topCopy','binCopy','normCopy'):
 	figCount += 1
 
 fig.savefig('copyingVersusDiversity.pdf')
-
-
-
-
-"""
-heatmap, xedges, yedges = np.histogram2d(x, y, bins=50)
-extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-plt.imshow(heatmap, extent=extent)
-#plt.xlim(0,1)
-#plt.ylim(0,1)
-plt.xlabel('entropy')
-plt.ylabel('copyProbability')
-fig.savefig('copyingVersusDiversity.pdf')
-#plt.scatter(rel_ent[:len(topCopy)], topCopy)
-"""
