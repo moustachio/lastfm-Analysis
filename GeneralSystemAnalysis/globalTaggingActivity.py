@@ -23,4 +23,8 @@ for row in result:
 	out.write(str(row[0])+'\t'+str(row[1])+'\n')
 out.close()
 
+### Annotations per item per month
+cursor.execute("select tag_month, AVG(count(*")
+
+
 closeDBConnection(cursor)

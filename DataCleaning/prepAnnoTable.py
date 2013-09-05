@@ -67,12 +67,12 @@ cursor.close()
 
 # Dictionaries for storing itemID/itemURL and tagID/tagName relationships. Load them from file if they're already present (this should speed things up on subsequeent runs)
 try:
-	tagDict = cPickle.load(open('data/tagDict'))
+	tagDict = cPickle.load(open('tagDict'))
 except:
 	tagDict = {} 
 try:
 
-	itemDict = cPickle.load(open('data/itemDict'))
+	itemDict = cPickle.load(open('itemDict'))
 except:
 	itemDict = {} 
 
@@ -132,5 +132,5 @@ db.commit()
 dbSS.commit()
 cursor.close()
 cursorSS.close()             
-cPickle.dump(itemDict, open('data/itemDict','w'))
-cPickle.dump(tagDict, open('data/tagDict','w'))
+cPickle.dump(itemDict, open('itemDict','w'))
+cPickle.dump(tagDict, open('tagDict','w'))
