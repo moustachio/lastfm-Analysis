@@ -7,6 +7,7 @@ Calculates entropy measure for tag distributuions of all unique items for each m
 import sys 
 sys.path.append('../bin') # This makes sure Python can see the 'bin' directory where dbSetup is located
 from dbSetup import *
+from distAnalysis import *
 import collections
 import numpy as np
 import time
@@ -21,37 +22,7 @@ closeDBConnection(cursor)
 cursor=db.cursor()
 cursorSS=dbSS.cursor()
 cursorSS.execute("select * from lastfm_annotations order by item_id, tag_month;")
-
-
-#calculation of entropy and relative entropy. returns tuple
-def ent(li):
-	counter=collections.Counter(li)
-	freq = counter.values()
-	# return zero if there's only one unique tag
-	if len(freq)==1:
-		return (0,0,1,freq[0])
-	sm = sum(freq) 
-	#replaces each value with the relative frequency
-	for i,x in enumerate(freq):
-		freq[i] = (x * 1.0) / sm
-	e = 0
-	#calc entropy
-	for x in freq: 
-		e += x * np.log2(x) 
-	e = -e
-	n = len(freq)
-	p = 1.0/n
-	eMax = - n*p*np.log2(p)
-	return e , e / eMax , n , sm
-	
-
-
-def gini(li):
-	 n = float(len(li))
-	 numSum = 0 # sum from numerator
-	 for i, freq in enumerate(sorted(li)):
-		  numSum += ((i+1)*float(freq)) 
-	 return (2*numSum)/(n*sum(li)) - ((n+1)/n)
+#cursorSS.execute("select * from anno_sample order by item_id, tag_month;")
 
 
 dic = {}
@@ -67,7 +38,7 @@ for row in cursorSS:
 	# this is just an efficiency thing. 
 	if count>0 and count % 100000 == 0:
 		db.commit()
-		print count, time.time()-start / 60.0
+		print count, (time.time()-start) / 60.0
 	date1 = row[4]
 	id1 = row[1]
 	#used when new item

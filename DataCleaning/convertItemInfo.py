@@ -1,6 +1,6 @@
 """
 Converts artist names in lastfm_itemlist to artist_ids for better indexing.
-MUST BE RUN AFTER prepAnnoTable AND prepScrobble !!!
+MUST BE RUN AFTER other table prep scripts !!!
 """
 
 import sys
@@ -27,7 +27,7 @@ print "artists updated"
 
 artistDict = {}
 
-# get all albums and songs into sreaeming cursor 
+# get all artists into streaming cursor 
 cursorSS.execute("select * from lastfm_itemlist where item_type = 'artist';") 
 
 # get all our artist IDs in the dictionary

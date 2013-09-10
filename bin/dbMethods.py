@@ -24,8 +24,8 @@ def tagIDfromName(tag,check=True):
     closeDBConnection(cursor)
     return tid
 
-# Retrieve item ID from lastmf_itemlist. If not present, generate new item ID (via table auto_increment)
-# Since the prepAnnoTable/prepScrobbleTable scripts handles the tag names with a dictionary, we want to be able to save time by not searching through the non-indexed tag_names (hence the "check" variable)
+# Retrieve item ID from lastfm_itemlist. If not present, generate new item ID (via table auto_increment)
+# Since the prepAnnoTable/prepScrobbleTable scripts handles the item names with a dictionary, we want to be able to save time by not searching through the non-indexed tag_names (hence the "check" variable)
 
 def itemIDfromURL(item,check=True):
     if check:

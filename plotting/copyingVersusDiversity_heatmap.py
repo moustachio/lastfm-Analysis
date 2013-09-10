@@ -1,5 +1,5 @@
 """
-Generates plots of copy probability as a function of item entropy, on an item-by-item basis (averaged across all users)
+Generates plots of copy probability as a function of item entropy, pooled across all items.
 """
 
 
@@ -27,7 +27,7 @@ normCopy = []
 for row in cursorSS:
 	iid = row[0]
 	copyVal = row[7]
-	#if lastVal and copyVal != None:
+	#if lastVal and copyVal != None: 
 	if copyVal != None and row[6] > 99:
 		rel_ent.append(row[3])
 		ent.append(row[2])
