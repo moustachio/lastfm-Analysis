@@ -21,14 +21,16 @@ topCopy = []
 #binCopy = []
 #normCopy = []
 
+lastEnt = firstRow[3]
 for row in cursorSS:
 	copyVal = row[7]
 	if copyVal != None:
-		data[round(row[3],2)].append(copyVal)
+		data[round(lastEnt,2)].append(copyVal)
+	lastEnt = row[3]
 
 x = sorted(data.keys())
-y = [np.mean(data[i]) for i in sorted(data)]
-err = [tsem(data[i]) for i in sorted(data)]
+y = [np.mean(data[i]) if data[i] else 0 for i in sorted(data)]
+err = [2*tsem(data[i]) if data[i] else 0 for i in sorted(data)]
 fig = plt.figure()
 plt.errorbar(x,y,err)
 fig.savefig('CvD_lineplot.pdf')

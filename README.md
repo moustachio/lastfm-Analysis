@@ -58,11 +58,11 @@ Plotting
 Scripts for data visualization
 
 * copyingVersusDiversity_heatmap.py: Generates heatmpa plots of copy probability as a function of item entropy, pooled across all items.
-* copyingVersusDiversity_lineplot.py: Generates line plots of copy probability as a function of item entropy, pooled across all items and showing average trends. *incomplete*
+* copyingVersusDiversity_lineplot.py: Generates line plots of copy probability as a function of item entropy, pooled across all items and showing average trends. *INCOMPLETE*
 * full/full_plot.py: Calculates the average entropy, relative entropy, and gini coefficient as a function of item "age", across all items. The "age" of an item is defined as the number of calendar months since the first month in which it was tagged. *should be combined!*
-* itemTagEvolution.py: Takes artist name as input and generates plot of cumulative frequencies of tags assigned to that artist over time. *incomplete*
+* itemTagEvolution.py: Takes artist name as input and generates plot of cumulative frequencies of tags assigned to that artist over time. *INCOMPLETE*
 * shrink/shrink_plot.py: calculates the entropy, relative entropy, and gini coefficient as a function of item age. The "age" of an item is defined as the number of months in which it has received tags since the first month in which it was tagged. *should be combined!*
 * globalActivity.py: Generates various plots of global tagging activity over time.
-* systemTagEvolution.py: Goal is to generate plots similat to itemTagEvolution.py, but for the full taxonomy. Just a placeholder filefor now *incomplete*
+* systemTagEvolution.py: Goal is to generate plots similat to itemTagEvolution.py, but for the full taxonomy. Just a placeholder filefor now *INCOMPLETE*
 
 

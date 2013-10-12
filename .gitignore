@@ -4,3 +4,8 @@ plotting/*pdf
 plotting/*png
 itemDict
 tagDict
+*.ipynb
+/*.tsv
+/*.pdf
+/*.html
+*pdf

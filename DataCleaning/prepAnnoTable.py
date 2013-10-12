@@ -23,6 +23,7 @@ cursor=db.cursor()
 cursor.execute("DROP TABLE IF EXISTS lastfm_annotations;")
 cursor.execute("DROP TABLE IF EXISTS lastfm_taglist;")
 cursor.execute("DROP TABLE IF EXISTS lastfm_itemlist;")
+print "tables dropped"
 
 # Set up new Tables  (REMOVED TAG_DATE!)
 cursor.execute("CREATE TABLE lastfm_annotations ( \
@@ -64,6 +65,8 @@ cursor.execute("CREATE TABLE lastfm_itemlist ( \
 
 db.commit()
 cursor.close()
+
+print "New tables set up"
 
 # Dictionaries for storing itemID/itemURL and tagID/tagName relationships. Load them from file if they're already present (this should speed things up on subsequeent runs)
 try:

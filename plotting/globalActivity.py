@@ -10,7 +10,7 @@ from matplotlib import dates,pyplot
 colorList = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 colors = itertools.cycle(colorList)
 
-# converts date in format "yyyy-mm-dd" to seconds since epoch
+# converts date in format "yyyy-mm-dd" to days since epoch
 def dateConvert(dateString):
 	return dates.date2num(datetime.datetime.strptime(dateString,'%Y-%m-%d'))
 
@@ -115,6 +115,7 @@ pyplot.legend(loc='lower left')
 fig.savefig('diversityOverTime_folksonomy.pdf')
 
 ### Number of annotations and tags, and related
+### THIS IS ALL SCRATCH FOR NOW
 
 # Calculate the number of new tags added to the vocabulary each month
 last = 0
@@ -124,10 +125,6 @@ for i in data[10]:
 	i = int(i)
 	newTags.append(i-last)
 	last = i
-
-# ratio of new to existing tags each month
-
-
 
 fig = pyplot.figure()
 for i in (6,12):

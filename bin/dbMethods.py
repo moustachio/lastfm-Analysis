@@ -37,8 +37,10 @@ def itemIDfromURL(item,check=True):
             return result[0]
 
     # This block determines the item type (based on URL format, e.g. "artist/album/songName"), and stores item data as appropriate.
-    spl = item.replace('_','').split('/')
+    spl = item.split('/') # this was previously "spl = item.replace('_','').split('/')" - don't know why I was doing the replace...
     artist = spl[0]
+    if len(spl)==4:
+        spl = spl[1:]
     if len(spl)==2:
         itemType = 'album'
         album = spl[1]
@@ -50,10 +52,13 @@ def itemIDfromURL(item,check=True):
         else:
             album=None
         song = spl[2]
-    else:
+    elif len(spl)==1:
         itemType = 'artist'
         album = None
         song = None
+    else:
+        print item,spl
+        raise()
     
     cursor=db.cursor()
     cursor.execute("insert into lastfm_itemlist (item_type,artist,album,song,item_url) values (%s,%s,%s,%s,%s);",(itemType,artist,album,song,item))
