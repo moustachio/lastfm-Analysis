@@ -33,4 +33,4 @@ y = [np.mean(data[i]) if data[i] else 0 for i in sorted(data)]
 err = [2*tsem(data[i]) if data[i] else 0 for i in sorted(data)]
 fig = plt.figure()
 plt.errorbar(x,y,err)
-fig.savefig('CvD_lineplot.pdf')
+fig.savefig('plots/CvD_lineplot.pdf')

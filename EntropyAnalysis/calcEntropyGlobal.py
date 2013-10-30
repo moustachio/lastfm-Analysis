@@ -14,7 +14,7 @@ import time
 currentMonthDist = {}
 cumulativeDist = {}
 
-f = open('../Results/anno_sort_date.iid_.tsv','r')
+f = open('../Results/annotations_date-iid-tid.tsv','r')
 out = open('../Results/entcetera','w')
 out.write('date\tentropy\trelativeEntropy\tgini\ttags\tannotations\tannoPerTag\tentropy.cumulative\trelativeEntropy.cumulative\tgini.cumulative\ttags.cumulative\tannotations.cumulative\tannoPerTag.cumulative\n')
 

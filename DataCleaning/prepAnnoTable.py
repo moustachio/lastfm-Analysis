@@ -99,9 +99,16 @@ for row in cursorSS:
 	# get tag and item IDs from dicts (if they're presnent)
 	tagName = row[2].strip().lower()
 	tagID = tagDict.get(tagName)
+
 	itemURL = row[1].strip().lower()
+	spl = itemURL.split('/')
+	if spl[0]=='+noredirect':
+		artistName = spl[1]
+		itemURL = '/'.join(spl[1:])
+	else:
+		artistName = spl[0]
+
 	itemID = itemDict.get(itemURL)
-	artistName = itemURL.split('/')[0]
 	artistID = itemDict.get(artistName)
 	
 	fulldate = row[3]

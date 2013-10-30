@@ -87,5 +87,37 @@ for row in cursorSS:
 	lastDate = date
 	rowCount += 1
 
+### Need to add this block (probably a cleaner way to handle it) to handle the last row...
+if not first and totalTagDist:	
+	# get frequencies of top N tags
+	topN = sorted(totalTagDist,key=totalTagDist.get)[-N:]
+	# this gives us the frequency of the most popular tag
+	n = totalTagDist[topN[-1]]
+
+	# MEASURE 1: Binary copy or not
+	binCopy=0
+	# MEASURE 2: Copy from top 5 or not
+	topCopy=0
+	# MEASURE 3: Copy proportional to frequency in distribution
+	normCopy = 0
+
+	# calculates counts for all measures
+	for t in currentTagDist:
+		tCount = totalTagDist.get(t,None)
+		if t in topN:
+			count = currentTagDist[t]
+			topCopy += count
+			binCopy += count
+			normCopy += count * (tCount / float(n))
+		elif tCount:
+			count = currentTagDist[t]
+			binCopy += count
+			normCopy += count * (tCount / float(n))
+
+	total = sum(currentTagDist.values())
+
+	cursor.execute("update ent_table set topCopy=%s, binCopy=%s, normCopy=%s where item_id=%s and month=%s", (float(topCopy) / total, float(binCopy) / total, float(normCopy) / total, lastItem, lastDate))
+
+
 closeDBConnection(cursor)
 closeDBConnectionSS(cursorSS)

@@ -70,7 +70,7 @@ ax3.plot((-d,+d),(1-d,1+d), **kwargs)   # bottom-left diagonal
 ax3.plot((1-d,1+d),(1-d,1+d), **kwargs) # bottom-right diagonal
 
 ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.25),ncol=3, fancybox=True, shadow=True)
-f.savefig('globalTaggingActivity.pdf')
+f.savefig('plots/globalTaggingActivity.pdf')
 
 ##############################
 # Global changes in entropy, relative entropy, gini coefficient, unique tags, and total annotations over time
@@ -112,7 +112,7 @@ for i in (2,3,8,9):
 	pyplot.plot_date(X,data[i][start:end],label=header[i],ls='-',marker=None,color=colors.next())
 pyplot.ylim(0.4,1)
 pyplot.legend(loc='lower left')
-fig.savefig('diversityOverTime_folksonomy.pdf')
+fig.savefig('plots/diversityOverTime_folksonomy.pdf')
 
 ### Number of annotations and tags, and related
 ### THIS IS ALL SCRATCH FOR NOW
@@ -132,4 +132,4 @@ for i in (6,12):
 pyplot.plot_date(X,newTags[start:end],label='new tags',ls='-',marker=None,color=colors.next())
 #pyplot.ylim(0.4,1)
 pyplot.legend(loc='upper left')
-fig.savefig('tagsOverTime_folksonomy.pdf')
+fig.savefig('plots/tagsOverTime_folksonomy.pdf')

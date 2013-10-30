@@ -86,4 +86,4 @@ for data in ('topCopy','binCopy','normCopy'):
 	cb.set_label('log10(N)')
 	figCount += 1
 
-fig.savefig('copyingVersusDiversity.pdf')
+fig.savefig('plots/copyingVersusDiversity_min100Anno.pdf')

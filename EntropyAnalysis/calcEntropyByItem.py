@@ -15,7 +15,7 @@ import time
 cursor=db.cursor()
 cursor.execute("DROP TABLE IF EXISTS ent_table;") # This should just drop the entropy table
 
-cursor.execute("CREATE TABLE ent_table (item_id mediumint(8) unsigned, month date, ent FLOAT, rel_ent FLOAT, gini FLOAT, unique_tags mediumint(8), total_annotations mediumint(8), topCopy FLOAT, binCopy FLOAT, normCopy FLOAT, \
+cursor.execute("CREATE TABLE ent_table (item_id mediumint(8) unsigned, month date, ent FLOAT, rel_ent FLOAT, gini FLOAT, unique_tags mediumint(8), total_annotations mediumint(8), topCopy FLOAT, binCopy FLOAT, normCopy FLOAT, seq tinyint unsigned, \
     index(item_id), index(month)) ENGINE=innodb DEFAULT CHARSET=latin1;") 
 closeDBConnection(cursor) 
 
@@ -33,6 +33,7 @@ id1 = 0
 date2 = 0
 id2 = 0
 count = 0
+seq = 0
 start = time.time()
 for row in cursorSS:
 	# this is just an efficiency thing. 
@@ -53,14 +54,26 @@ for row in cursorSS:
 		n = en[2]
 		sm = en[3]
 		gin = gini(dic[id2])
-		cursor.execute("insert ignore into ent_table (item_id, month, ent, rel_ent, gini, unique_tags, total_annotations) values (%s,%s,%s,%s,%s,%s,%s)",(id2,date2,e,re,gin,n,sm)) # names need to match what you defined in the table above
-		#used when new id. creates new dic. Only need to do this check if the other one passes, so no need to check for count>0
+		cursor.execute("insert ignore into ent_table (item_id, month, ent, rel_ent, gini, unique_tags, total_annotations,seq) values (%s,%s,%s,%s,%s,%s,%s,%s)",(id2,date2,e,re,gin,n,sm,seq)) 
 		if id1 != id2:
 			dic = {row[1] : []}
+			seq=0
+		else:
+			seq += 1
 	#add new value to key
 	dic[row[1]].append(row[3]) # tag name is column 3, not 4
 	count += 1
 	date2 = row[4]
 	id2 = row[1]
+
+# Final insert
+en = ent(dic[id2])
+e = en[0]
+re = en[1]
+n = en[2]
+sm = en[3]
+gin = gini(dic[id2])
+cursor.execute("insert ignore into ent_table (item_id, month, ent, rel_ent, gini, unique_tags, total_annotations,seq) values (%s,%s,%s,%s,%s,%s,%s,%s)",(id2,date2,e,re,gin,n,sm,seq)) 
+
 closeDBConnection(cursor)	 
 closeDBConnection(cursorSS)

@@ -12,7 +12,7 @@ f = open('../Results/tagFreqByMonth.tsv')
 cursor = db.cursor()
 cursor.execute("drop table if exists tag_info;")
 cursor.execute("CREATE TABLE `tag_info` (\
-	`date` tinyint UNSIGNED NULL,\
+	`date` date  NULL,\
 	`tag_id` MEDIUMINT(8) UNSIGNED NULL,\
 	`info` FLOAT UNSIGNED NULL,\
 	INDEX `date` (`date`),\
