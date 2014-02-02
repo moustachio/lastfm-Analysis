@@ -1,19 +1,21 @@
-import sys
-sys.path.append('../bin')
 import MySQLdb
 
 db = MySQLdb.connect(host="127.0.0.1", user="root", passwd="root", db="mysql")
 
 cursor=db.cursor();
-cursor.execute("drop database if exists sample_lastfm;")
-cursor.execute("create database sample_lastfm;")
+cursor.execute("drop database if exists lastfm_mini;")
+cursor.execute("create database lastfm_mini;")
 db.commit()
 
-cursor=db.cursor()
-for dbName in ('annotations','bannedtracks','extended_user_info','friendlist','groups','lovedtracks'): # 'crawlqueue','errorqueue'
-	cursor.execute("create table sample_lastfm.lastfm_"+dbName+" like crawler_lastfm.lastfm_"+dbName)
-	cursor.execute("insert into sample_lastfm.lastfm_"+dbName+" select * from crawler_lastfm.lastfm_"+dbName+" limit 100000")
+cursor.execute("show tables from analysis_lastfm;")
+tables = [i[0] for i in cursor.fetchall()]
+
+
+for table in tables:
+	cursor.execute("create table lastfm_mini."+table+" like analysis_lastfm."+table)
+	cursor.execute("insert into lastfm_mini."+table+" select * from analysis_lastfm."+table+" limit 100000")
 	db.commit()
+	print "Table "+table+" complete"
 cursor.close()
 
 	

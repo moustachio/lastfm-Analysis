@@ -1,7 +1,7 @@
 """
 Script to calculate probability of an existing tag being copied from month to month.
 E.g. probability that any given tag used at t+1 is copied from the tag distribution at time t.
-Calculation is performed on an item by item basis.
+Calculation is performed on an user by user basis.
 """
 
 import sys
@@ -13,14 +13,14 @@ import time
 N = 5 # "N" for use in "topN" heuristic (typically 5)
 
 cursor=db.cursor()
-cursor.execute("update ent_items set topCopy=NULL, binCopy=NULL, normCopy=NULL where topCopy is not NULL;")
+cursor.execute("update ent_users set topCopy=NULL, binCopy=NULL, normCopy=NULL where topCopy is not NULL;")
 db.commit()
 
 
 cursorSS=dbSS.cursor()
-cursorSS.execute("select * from lastfm_annotations order by item_id, tag_month;")
+cursorSS.execute("select * from lastfm_annotations order by user_id, tag_month;")
 
-lastItem = None
+lastUser = None
 lastDate = None
 first = True
 rowCount = 0
@@ -34,10 +34,10 @@ for row in cursorSS:
 		db.commit()
 		print rowCount, (time.time()-start) / 60.0
 
-	item = row[1]
+	user = row[0]
 	tag = row[3]
 	date = row[4]
-	if (item != lastItem) or (date != lastDate):
+	if (user != lastUser) or (date != lastDate):
 		
 		if not first and totalTagDist:	
 			# get frequencies of top N tags
@@ -67,9 +67,9 @@ for row in cursorSS:
 
 			total = sum(currentTagDist.values())
 
-			cursor.execute("update ent_items set topCopy=%s, binCopy=%s, normCopy=%s where item_id=%s and month=%s", (float(topCopy) / total, float(binCopy) / total, float(normCopy) / total, lastItem, lastDate))
+			cursor.execute("update ent_users set topCopy=%s, binCopy=%s, normCopy=%s where user_id=%s and month=%s", (float(topCopy) / total, float(binCopy) / total, float(normCopy) / total, lastUser, lastDate))
 
-		if item == lastItem:
+		if user == lastUser:
 			for t in currentTagDist:
 				totalTagDist[t] = totalTagDist.get(t,0)+1
 		else:
@@ -77,13 +77,13 @@ for row in cursorSS:
 
 		currentTagDist = {}
 
-		if item != lastItem:
+		if user != lastUser:
 			first = True
 		else:
 			first = False
 
 	currentTagDist[tag] = currentTagDist.get(tag,0)+1
-	lastItem = item
+	lastUser = user
 	lastDate = date
 	rowCount += 1
 
@@ -116,7 +116,7 @@ if not first and totalTagDist:
 
 	total = sum(currentTagDist.values())
 
-	cursor.execute("update ent_items set topCopy=%s, binCopy=%s, normCopy=%s where item_id=%s and month=%s", (float(topCopy) / total, float(binCopy) / total, float(normCopy) / total, lastItem, lastDate))
+	cursor.execute("update ent_users set topCopy=%s, binCopy=%s, normCopy=%s where user_id=%s and month=%s", (float(topCopy) / total, float(binCopy) / total, float(normCopy) / total, lastUser, lastDate))
 
 
 closeDBConnection(cursor)

@@ -32,7 +32,6 @@ def tagIDfromName(tag,check=True):
 def itemIDfromURL(item,check=True):
     if check:
         cursor=db.cursor()
-        #cursor.execute("select item_id from lastfm_itemlist where item_url=%s",(item))
         cursor.execute("select item_id from lastfm_itemlist where item_url=%s",(item))
         result = cursor.fetchone()
         closeDBConnection(cursor)
@@ -45,19 +44,23 @@ def itemIDfromURL(item,check=True):
     artist = spl[0]
     
     if len(spl)==1:
-        itemType = 'artist'
+        itemType = 0 #'artist'
         album = None
         song = None
     elif len(spl)==2:
-        itemType = 'album'
+        itemType = 1 #'album'
         album = spl[1]
         song = None
     elif len(spl)==3:
-        itemType='song'
+        itemType= 2 #'song'
+        """
+        # We know all songs don't have associated albums in our data
         if len(spl[1])>0:
             album = spl[1]
         else:
             album=None
+        """
+        album = None
         song = spl[2]
     else:
         print item,spl

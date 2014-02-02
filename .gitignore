@@ -2,10 +2,15 @@
 Results/*
 plotting/*pdf
 plotting/*png
-itemDict
+*Log
 tagDict
 *.tsv
 *.pdf
 *.html
 *.pem
 *checkpoint.ipynb
+*.txt
+*.csv
+*itemDict*
+*pkl
+*.bat

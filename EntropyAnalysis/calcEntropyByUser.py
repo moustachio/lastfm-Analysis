@@ -13,19 +13,22 @@ import numpy as np
 import time
 
 cursor=db.cursor()
-cursor.execute("DROP TABLE IF EXISTS ent_items;") # This should just drop the entropy table
+cursor.execute("DROP TABLE IF EXISTS ent_users;") # This should just drop the entropy table
+print 'table dropped'
 
-cursor.execute("CREATE TABLE ent_items (item_id mediumint(8) unsigned, month date, \
+cursor.execute("CREATE TABLE ent_users (user_id int unsigned, month date, \
 	ent_cumulative FLOAT, rel_ent_cumulative FLOAT, gini_cumulative FLOAT, tags_cumulative int, anno_cumulative int, \
 	ent_current FLOAT, rel_ent_current FLOAT, gini_current FLOAT, tags_current int, anno_current int, \
 	topCopy FLOAT, binCopy FLOAT, normCopy FLOAT, seq tinyint unsigned, \
-    index(item_id), index(month)) ENGINE=innodb DEFAULT CHARSET=latin1;") 
+    index(user_id), index(month)) ENGINE=innodb DEFAULT CHARSET=latin1;") 
 closeDBConnection(cursor) 
+print 'new table generated'
 
 cursor=db.cursor()
 cursorSS=dbSS.cursor()
-cursorSS.execute("select * from lastfm_annotations order by item_id, tag_month;")
-
+cursorSS.execute("select * from lastfm_annotations order by user_id, tag_month;")
+print 'query executed'
+	
 
 dictCumulative = {}
 dictCurrent = {}
@@ -44,11 +47,11 @@ for row in cursorSS:
 		db.commit()
 		print count, (time.time()-start) / 60.0
 	date1 = row[4]
-	id1 = row[1]
+	id1 = row[0] # same as old, this is USER ID
 	#used when new item
 	if not dictCumulative:
-		dictCumulative = {row[1] : []} 
-		dictCurrent = {row[1] : []} 
+		dictCumulative = {row[0] : []} 
+		dictCurrent = {row[0] : []} 
 	#used when new month. calc ent rel_ent and gini and put them in db
 	if ((date1 != date2) or (id1 != id2)) and count > 0: 
 		
@@ -67,25 +70,25 @@ for row in cursorSS:
 		gin_cumulative = gini(dictCumulative[id2])
 		gin_current = gini(dictCurrent[id2])	
 
-		cursor.execute("insert ignore into ent_items (item_id, month, \
+		cursor.execute("insert ignore into ent_users (user_id, month, \
 			ent_cumulative, rel_ent_cumulative, gini_cumulative, tags_cumulative, anno_cumulative, \
 			ent_current, rel_ent_current, gini_current, tags_current, anno_current, \
 			seq) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(id2,date2,e_cumulative,re_cumulative,gin_cumulative,n_cumulative,sm_cumulative,e_current,re_current,gin_current,n_current,sm_current,seq)) 
 		
 		if date1 != date2:
-			dictCurrent = {row[1]: []}
+			dictCurrent = {row[0]: []}
 		if id1 != id2:
-			dictCumulative = {row[1] : []}
-			dictCurrent = {row[1]: []}
+			dictCumulative = {row[0] : []}
+			dictCurrent = {row[0]: []}
 			seq=0
 		else:
 			seq += 1
 	#add new value to key
-	dictCumulative[row[1]].append(row[3])
-	dictCurrent[row[1]].append(row[3])
+	dictCumulative[row[0]].append(row[3])
+	dictCurrent[row[0]].append(row[3])
 	count += 1
 	date2 = row[4]
-	id2 = row[1]
+	id2 = row[0]
 
 
 
@@ -105,7 +108,7 @@ sm_current = en_current[3]
 gin_cumulative = gini(dictCumulative[id2])
 gin_current = gini(dictCurrent[id2])	
 
-cursor.execute("insert ignore into ent_items (item_id, month, \
+cursor.execute("insert ignore into ent_users (user_id, month, \
 	ent_cumulative, rel_ent_cumulative, gini_cumulative, tags_cumulative, anno_cumulative, \
 	ent_current, rel_ent_current, gini_current, tags_current, anno_current, \
 	seq) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(id2,date2,e_cumulative,re_cumulative,gin_cumulative,n_cumulative,sm_cumulative,e_current,re_current,gin_current,n_current,sm_current,seq)) 

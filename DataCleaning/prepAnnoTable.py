@@ -80,7 +80,7 @@ except:
 	itemDict = {} 
 
 cursorSS=dbSS.cursor()
-cursorSS.execute("select * from lastfm_annotations;") # get all annotations on streming cursor
+cursorSS.execute("select * from annotations_updated;") # get all annotations on streming cursor
 cursor=db.cursor()
 
 # just for feedback on the script's progress
