@@ -8,9 +8,17 @@ tagDict
 *.pdf
 *.html
 *.pem
+<<<<<<< HEAD
 *checkpoint.ipynb
 *.txt
 *.csv
 *itemDict*
 *pkl
 *.bat
+=======
+*checkpoint.ipynb
+*.txt
+*.csv
+*itemDict*
+*pkl
+>>>>>>> 01a085b516053f6a046a069d9c406fb712bebdcc
